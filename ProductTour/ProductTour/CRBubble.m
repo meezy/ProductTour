@@ -15,6 +15,7 @@
 #define CR_DESCRIPTION_FONT_SIZE 14
 
 #define SHOW_ZONE NO
+#define BUBBLE_TAPPED_NOTIFICATION (@"crBubbleTapped")
 
 @implementation CRBubble
 @synthesize fontName;
@@ -83,7 +84,10 @@
             UIView *myview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.attachedView.frame.size.width, self.attachedView.frame.size.height)];
             [myview setBackgroundColor:self.color];
             [myview setAlpha:0.3];
-            [myview setUserInteractionEnabled:NO];
+        [myview setUserInteractionEnabled:YES];
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(notifyButtonTapped:)];
+        [myview addGestureRecognizer:tapGesture];
+        [self.attachedView addSubview:myview];
             [self.attachedView addSubview:myview];
         }
         
@@ -93,6 +97,10 @@
     
     
     return self;
+}
+
+- (void) notifyButtonTapped: (UITapGestureRecognizer *)gesture {
+    [[NSNotificationCenter defaultCenter] postNotificationName:BUBBLE_TAPPED_NOTIFICATION object:nil];
 }
 
 
